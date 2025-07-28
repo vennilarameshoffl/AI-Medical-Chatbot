@@ -4,9 +4,10 @@ import numpy as np
 from sklearn.preprocessing import LabelEncoder, MultiLabelBinarizer
 from sklearn.naive_bayes import MultinomialNB
 
-df = pd.read_csv("C:/Users/venni/Downloads/archive/dataset.csv")
-desc_df = pd.read_csv("C:/Users/venni/Downloads/archive/symptom_Description.csv")
-prec_df = pd.read_csv("C:/Users/venni/Downloads/archive/symptom_precaution.csv")
+df = pd.read_csv("dataset.csv")
+desc_df = pd.read_csv("symptom_Description.csv")
+prec_df = pd.read_csv("symptom_precaution.csv")
+
 
 symptom_cols = [col for col in df.columns if col.startswith('Symptom')]
 df[symptom_cols] = df[symptom_cols].fillna('')
