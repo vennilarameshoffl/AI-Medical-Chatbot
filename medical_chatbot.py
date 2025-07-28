@@ -4,12 +4,10 @@ import numpy as np
 from sklearn.preprocessing import LabelEncoder, MultiLabelBinarizer
 from sklearn.naive_bayes import MultinomialNB
 
-# ---------------------- LOAD DATA ----------------------
 df = pd.read_csv("C:/Users/venni/Downloads/archive/dataset.csv")
 desc_df = pd.read_csv("C:/Users/venni/Downloads/archive/symptom_Description.csv")
 prec_df = pd.read_csv("C:/Users/venni/Downloads/archive/symptom_precaution.csv")
 
-# ---------------------- PREPROCESSING ----------------------
 symptom_cols = [col for col in df.columns if col.startswith('Symptom')]
 df[symptom_cols] = df[symptom_cols].fillna('')
 df["Symptoms"] = df[symptom_cols].values.tolist()
@@ -31,7 +29,6 @@ def train_model():
 model = train_model()
 all_symptoms = sorted(mlb.classes_)
 
-# ---------------------- FUNCTIONS ----------------------
 def predict_disease(symptoms):
     input_vector = np.zeros(len(all_symptoms))
     for s in symptoms:
@@ -52,19 +49,16 @@ def get_precautions(disease_name):
         return [match[f'Precaution_{i}'].values[0] for i in range(1, 5)]
     return ["No precautions found."]
 
-# ---------------------- STREAMLIT UI ----------------------
 st.set_page_config(page_title="AI Medical Chatbot", layout="centered")
 st.title("🤖 AI Medical Chatbot - Symptom Checker")
 st.markdown("Select your symptoms below and get a medical prediction:")
 
-# ✅ SAFE MULTISELECT (No session state yet)
 selected_symptoms = st.multiselect(
     "🩺 Type and select your symptoms:",
     options=all_symptoms,
     help="Start typing to filter symptoms..."
 )
 
-# --- Diagnose Button ---
 if st.button("🔍 Diagnose"):
     if selected_symptoms:
         disease, confidence = predict_disease(selected_symptoms)
@@ -83,7 +77,6 @@ if st.button("🔍 Diagnose"):
     else:
         st.warning("⚠️ Please select at least one symptom to diagnose.")
 
-# --- Feedback Section ---
 st.markdown("---")
 st.markdown("### 🙋 Was this prediction helpful?")
 col1, col2 = st.columns(2)
